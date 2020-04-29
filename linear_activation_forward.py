@@ -9,7 +9,8 @@ Created on Wed Apr 29 19:22:35 2020
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-
+from data_init import dat_init
+X_train, y_train, X_test, y_test = dat_init()
 # Sigmoid Function
 def sigmoid(x):
     z = 1/(1+np.exp(-x))
