@@ -10,14 +10,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+import warnings
+warnings.filterwarnings("ignore")
+
 def sigmoid_der(x):
+    w, h = x.shape
     z = 1/(1+np.exp(-x))
-    return (z*(1-z))
+    z = z*(1-z)
+    
+    assert (z.shape == (w, h))
+    return (z)
 
 def relu_der(x):
+    w, h = x.shape
     x[x<=0] = 0
     x[x>0] = 1
-    x = x.reshape(-1, 1)
+    
+    assert (x.shape == (w, h))
     return x
 
 def sigmoid_backward(dA, cache):
@@ -38,8 +47,10 @@ def linear_backward(dZ, cache):
     dA_prev -> gradient of cost w.r.t activation of previous layer
     """
     A_prev, W, b = cache
-    m = A_prev[1]
-    dW = (1/m)*np.dot(dZ, A_prev.T)
+    
+    m = A_prev.shape[1]
+    t = np.dot(dZ, A_prev.T)
+    dW = np.multiply(1/m, t)
     db = (1/m)*np.sum(dZ, axis=1, keepdims=True)
     dA_prev = np.dot(W.T, dZ)
     return dA_prev, dW, db
@@ -56,18 +67,21 @@ def linear_activation_backward(dA, cache, activation):
         dA_prev, dW, db = linear_backward(dZ, linear_cache)
     elif activation == 'sigmoid':
         dZ = sigmoid_backward(dA, activation_cache)
+        
+        assert (dZ.shape == (1, 8000))
         dA_prev, dW, db = linear_backward(dZ, linear_cache)
     return dA_prev, dW, db
 
 def L_model_backward(AL, Y, caches):
     grads = {}
-    L = len(caches) // 2
+    L = len(caches)
     m = AL.shape[1]
     Y = Y.reshape(AL.shape)
     dAL = -(np.divide(Y, AL) - np.divide(1-Y, 1-AL))
-    
+    assert (dAL.shape == AL.shape)
     # Lth layer
     current_cache = caches[L-1]
+    
     grads["dA"+str(L-1)], grads["dW"+str(L)], grads["db"+str(L)] = linear_activation_backward(dAL, current_cache, activation='sigmoid')
     
     # loop from L-2 to 0

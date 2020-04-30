@@ -47,8 +47,9 @@ def L_model_forward(X, parameters):
         A, cache = lin_act_forward(A_prev, parameters["W"+str(l)], parameters["b"+str(l)],
                                                       activation = 'relu')
         caches.append(cache)
-    AL, cache = lin_act_forward(A_prev, parameters["W"+str(L)], parameters["b"+str(L)],
-                                                  activation = 'relu')
+    
+    AL, cache = lin_act_forward(A, parameters["W"+str(L)], parameters["b"+str(L)],
+                                                  activation = 'sigmoid')
     caches.append(cache)
     
     assert (AL.shape == (y_train.shape[0], y_train.shape[1]))
