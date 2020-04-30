@@ -18,6 +18,7 @@ def update_params(parameters, grads, learning_rate):
         
     return parameters
 
+"""
 from linear_activation_forward import L_model_forward
 from parameter_initialize import para_init
 from data_init import dat_init
@@ -31,3 +32,4 @@ cost = compute_cost(AL, y_train)
 print (cost)
 gradients = L_model_backward(AL, y_train, caches)
 p = update_params(par, gradients, learning_rate=0.0075)
+"""
