@@ -94,6 +94,8 @@ def L_model_backward(AL, Y, caches):
         grads["db"+str(l+1)] = db_temp
     return grads
 
+
+"""
 from linear_activation_forward import L_model_forward
 from parameter_initialize import para_init
 from data_init import dat_init
@@ -105,4 +107,4 @@ AL, caches = L_model_forward(X_train, par)
 cost = compute_cost(AL, y_train)
 print (cost)
 gradients = L_model_backward(AL, y_train, caches)
-
+"""
