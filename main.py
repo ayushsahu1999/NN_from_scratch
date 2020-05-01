@@ -63,14 +63,17 @@ def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, 
     return parameters
 
 """
+from data_init import dat_init
 X_train, y_train, X_test, y_test = dat_init()
 layers_dims = [11, 10, 8, 1]
-parameters = L_layer_model(X_train, y_train, layers_dims, learning_rate=0.01, num_iterations=2500, print_cost=True)
+parameters = L_layer_model(X_train, y_train, layers_dims, learning_rate=0.1, num_iterations=4000, print_cost=True)
 """
 
 
 """
 # Different Learning rates
+import numpy as np
+import matplotlib.pyplot as plt
 learning_rates = [0.1, 0.01, 0.001]
 models = {}
 for i in learning_rates:
