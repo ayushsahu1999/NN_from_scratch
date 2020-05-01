@@ -52,7 +52,7 @@ def L_model_forward(X, parameters):
                                                   activation = 'sigmoid')
     caches.append(cache)
     
-    assert (AL.shape == (y_train.shape[0], y_train.shape[1]))
+    #assert (AL.shape == (y_train.shape[0], y_train.shape[1]))
     return AL, caches
 
 #AL, caches = L_model_forward(X_train, par)
