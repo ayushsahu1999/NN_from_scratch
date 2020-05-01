@@ -16,4 +16,4 @@ What is a weight matrix? A weight matrix is nothing but a matrix of random numbe
 For example, if your network have a 3 layer architecture with [6, 3, 4, 1] nodes. [6, 3, 4, 5] means 6 nodes in input layer, 3 nodes in the first hidden layer, 4 nodes in the second hidden layer and 1 node in the output layer.
 Now, as you have noticed there are 4 elements in the array. That's because we don't count input layer as a seperate layer. So, if we want to find number of layers in a neural network then it would be equal to number of hidden layers and output layer.
 
-So, if we go by this example W1 will have shape (3, 6), W2 will have shape (4, 3) and W3 will have shape (1, 4) and each element of these matrices will be initialized with small random values.
+So, if we go by this example W1 will have shape (3, 6), W2 will have shape (4, 3) and W3 will have shape (1, 4) and each element of these matrices will be initialized with small random values. We never take W0 as there is no point of taking a weight which is giving output to input layer.
