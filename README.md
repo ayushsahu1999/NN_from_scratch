@@ -30,7 +30,7 @@ Z1[1] -->  output of 1st node in layer 1
 Z2[1] -->  output of 2nd node in layer 1
 Z3[1] -->  output of 3rd node in layer 1
 
-![](images/Z1.png)
+![](Z1.PNG)
 
 So,
               Z1 = W1.X + b
