@@ -28,7 +28,7 @@ For finding the activation/output of first hidden layer, we have to do the dot p
 Zn[m] -->  output of nth node in layer m\
 Z1[1] -->  output of 1st node in layer 1\
 Z2[1] -->  output of 2nd node in layer 1\
-Z3[1] -->  output of 3rd node in layer 1\
+Z3[1] -->  output of 3rd node in layer 1
 
 ![](images/Z1.PNG)
 
@@ -46,3 +46,15 @@ There are many types of activation functions but some of the popular activation 
 2. Sigmoid Function
 3. Tanh Activation Function
 4. Rectified Linear Unit Function(ReLU)
+
+##### 1. Threshold activation function
+![](images/threshold.png)
+
+##### 2. Sigmoid activation function
+![](images/sigmoid.png)
+
+##### 3. Tanh activation function
+![](images/tanh.png)
+
+##### 4. ReLU activation function
+![](images/relu.png)
