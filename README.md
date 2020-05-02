@@ -59,12 +59,21 @@ It is equal to 1 when x>=0 and 0 when x<0.
 ##### 2. Sigmoid activation function
 ![](images/sigmoid.png)
 
-It is commonly used in the output layer of neural network if we want our neural network model to classify between two objects(0 and 1)
+It scales the values between 0 and 1. It is commonly used in the output layer of neural network if we want our neural network model to classify between two objects(0 and 1)
 
 ![](images/sig_func.PNG)
 
 ##### 3. Tanh activation function
 ![](images/tanh.png)
+
+It is known as hyperbolic tangent function. It is a non-linear activation function used in the activations of hidden layers. It scales the values between 1 and -1.
+
+##### Difference between Sigmoid and Tanh Activation Function.
+You may think that sigmoid and tanh functions are very similar. They are very much similar but the main difference between them is **sigmoid** function scales the values between 0 and 1 whereas **tanh** function scales the values between -1 and 1.
+
+##### Which to choose between Sigmoid and Tanh?
+You may ask which activation function to choose between the two functions. Generally, always **tanh** function outperforms the **sigmoid** function because in **tanh** function, the *mean* of activations that come out of hidden layers are closer to 0 which is a good thing. So, always **tanh** functions are prefered. There is only one case when **sigmoid** function is preferred over **tanh** function is when we are at output layer and doing binary classification. Otherwise, always *tanh* is used. Although, there is no such rule.
+
 
 ##### 4. ReLU activation function
 ![](images/relu.png)
