@@ -8,15 +8,19 @@
 #### Computing cost
 #### Backward Propagation
 
+# Image of a neural network
+
+![](images/neural_network.png)
+
 #### Forward Propagation
 Forward Propagation is nothing but series of matrix multiplications along the depth of the network, where the weights of current layer is taken dot product with the activation matrix of previous layers.
 
 ##### Weight matrix
 What is a weight matrix? A weight matrix is nothing but a matrix of random numbers with shape of (current, previous) where current is the number of units/nodes(A unit is a single neuron in a network) in the current layers(for which you are calculating the activations and previous is the number of nodes/units from the previous activation layer)
-For example, if your network have a 3 layer architecture with [6, 3, 4, 1] nodes. [6, 3, 4, 1] means 6 nodes in input layer, 3 nodes in the first hidden layer, 4 nodes in the second hidden layer and 1 node in the output layer.
+For example, if your network have a 3 layer architecture with [3, 4, 4, 1] nodes. [3, 4, 4, 1] means 3 nodes in input layer, 4 nodes in the first hidden layer, 4 nodes in the second hidden layer and 1 node in the output layer.
 Now, as you have noticed there are 4 elements in the array. That's because we don't count input layer as a seperate layer. So, if we want to find number of layers in a neural network then it would be equal to number of hidden layers and output layer.
 
-So, if we go by this example W1 will have shape (3, 6), W2 will have shape (4, 3) and W3 will have shape (1, 4) and each element of these matrices will be initialized with small random values. We never take W0 as there is no point of taking a weight which is giving output to input layer.
+So, if we go by this example W1 will have shape (4, 3), W2 will have shape (4, 4) and W3 will have shape (1, 4) and each element of these matrices will be initialized with small random values. We never take W0 as there is no point of taking a weight which is giving output to input layer.
 
 For finding the activation/output of first hidden layer, we have to do the dot product between the W1(first layer weight matrix) and (X)input layer(which is the previous layer). So the output Z1[1] will be W1.X. If bias(b) is also added then it would be equal to W1.X + b.
 Zn[m] -->  output of nth node in layer m
