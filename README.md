@@ -14,10 +14,10 @@
 
 ##### Here the input layer contains 3 units, 1st hidden layer contains 4 units, 2nd hidden layer contains 4 units and the output layer contains 1 unit. This is a 3 layer network because we don't count input layer as a layer.
 
-#### Forward Propagation
-Forward Propagation is nothing but series of matrix multiplications along the depth of the network, where the weights of current layer is taken dot product with the activation matrix of previous layers.
-
 ##### Weight matrix
+
+The arrows in the neural networks between the layers represents the weights. Weight matrix is the collection of weights of the same layer. 
+
 What is a weight matrix? A weight matrix is nothing but a matrix of random numbers with shape of (current, previous) where current is the number of units/nodes(A unit is a single neuron in a network) in the current layers(for which you are calculating the activations and previous is the number of nodes/units from the previous activation layer)
 For example, if your network have a 3 layer architecture with [3, 4, 4, 1] nodes. [3, 4, 4, 1] means 3 nodes in input layer, 4 nodes in the first hidden layer, 4 nodes in the second hidden layer and 1 node in the output layer.
 Now, as you have noticed there are 4 elements in the array. That's because we don't count input layer as a seperate layer. So, if we want to find number of layers in a neural network then it would be equal to number of hidden layers and output layer.
@@ -85,3 +85,6 @@ The main disadvantage is the slope of these functions are very less when x is ve
 This activation function is the first choice of many experienced people in deep learning industry for hidden layers. This is one of the best activation functions. It basically takes the maximum value between 0 and Z.
 ##### For example,
 ![](images/relu_matrix.PNG)
+
+#### Forward Propagation
+Forward Propagation is nothing but series of matrix multiplications along the depth of the network, where the weights of current layer is taken dot product with the activation matrix of previous layers.
