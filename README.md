@@ -29,10 +29,9 @@ Zn[m] -->  output of nth node in layer m
 Z1[1] -->  output of 1st node in layer 1
 Z2[1] -->  output of 2nd node in layer 1
 Z3[1] -->  output of 3rd node in layer 1
-         _       _
-        |  Z1[1]  |
-Z1 =    |  Z2[1]  |
-        |_ Z3[1] _|_
+
+![](images/Z1.png)
+
 So,
               Z1 = W1.X + b
 Similarly,
