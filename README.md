@@ -74,6 +74,14 @@ You may think that sigmoid and tanh functions are very similar. They are very mu
 ##### Which to choose between Sigmoid and Tanh?
 You may ask which activation function to choose between the two functions. Generally, always **tanh** function outperforms the **sigmoid** function because in **tanh** function, the *mean* of activations that come out of hidden layers are closer to 0 which is a good thing. So, always **tanh** functions are prefered. There is only one case when **sigmoid** function is preferred over **tanh** function is when we are at output layer and doing binary classification. Otherwise, always *tanh* is used. Although, there is no such rule.
 
+##### Disadvantage of **Sigmoid** and **Tanh** *activation functions*!
+First, you need to understand that weights are updated faster when slope of activation function is high, but weights will update slowly when slope of activation function is less.
+The main disadvantage is the slope of these functions are very less when x is very small or x is very large. So, when Z is either very small or very large then weights will also update slowly, so the model learns slowly.
+
 
 ##### 4. ReLU activation function
 ![](images/relu.png)
+
+This activation function is the first choice of many experienced people in deep learning industry for hidden layers. This is one of the best activation functions. It basically takes the maximum value between 0 and Z.
+##### For example,
+![](images/relu_matrix.PNG)
