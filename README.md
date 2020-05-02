@@ -25,10 +25,10 @@ Now, as you have noticed there are 4 elements in the array. That's because we do
 So, if we go by this example W1 will have shape (4, 3), W2 will have shape (4, 4) and W3 will have shape (1, 4) and each element of these matrices will be initialized with small random values. We never take W0 as there is no point of taking a weight which is giving output to input layer.
 
 For finding the activation/output of first hidden layer, we have to do the dot product between the W1(first layer weight matrix) and (X)input layer(which is the previous layer). So the output Z1[1] will be W1.X. If bias(b) is also added then it would be equal to W1.X + b.
-Zn[m] -->  output of nth node in layer m
-Z1[1] -->  output of 1st node in layer 1
-Z2[1] -->  output of 2nd node in layer 1
-Z3[1] -->  output of 3rd node in layer 1
+Zn[m] -->  output of nth node in layer m\n
+Z1[1] -->  output of 1st node in layer 1\n
+Z2[1] -->  output of 2nd node in layer 1\n
+Z3[1] -->  output of 3rd node in layer 1\n
 
 ![](images/Z1.PNG)
 
