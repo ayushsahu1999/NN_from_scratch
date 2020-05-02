@@ -61,7 +61,7 @@ It is equal to 1 when x>=0 and 0 when x<0.
 
 It scales the values between 0 and 1. It is commonly used in the output layer of neural network if we want our neural network model to classify between two objects(0 and 1)
 
-![](images/sig_func.PNG)
+![](images/sig_func.PNG)  ![](images/sig_matrix.PNG)
 
 ##### 3. Tanh activation function
 ![](images/tanh.png)
