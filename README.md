@@ -16,7 +16,7 @@
 
 ##### Weight matrix
 
-The arrows in the neural networks between the layers represents the weights. Weight matrix is the collection of weights of the same layer. 
+The arrows in the neural networks between the layers represents the weights. Weight matrix is the collection of weights of the same layer.
 
 What is a weight matrix? A weight matrix is nothing but a matrix of random numbers with shape of (current, previous) where current is the number of units/nodes(A unit is a single neuron in a network) in the current layers(for which you are calculating the activations and previous is the number of nodes/units from the previous activation layer)
 For example, if your network have a 3 layer architecture with [3, 4, 4, 1] nodes. [3, 4, 4, 1] means 3 nodes in input layer, 4 nodes in the first hidden layer, 4 nodes in the second hidden layer and 1 node in the output layer.
@@ -38,6 +38,10 @@ Similarly,
               Z2 = W2.A1 + b
               Z3 = W3.A2 + b
 We shall see A1, A2, A3 later when we see about activation functions.
+
+#### Bias
+Bias is only used to improve the performance of the model or used so that the dot product of weights and activations of previous layers never become 0. But, it is optional. It may depend on the developer whether he uses bias or not. It is denoted by 'b' and has the shape of (number of units in current layer, 1). So, if layer dimensions are [3, 4, 4, 1] then b1 will have shape (4, 1). b2 will have shape (4, 1) and b3 will have shape (1, 1).
+
 
 #### Activation Functions:
 Every output of a node is then passed through an activation function. Most of the times, non linear activation functions are used. Activation functions are a very important part of neural network. It helps in computing the result in desirable form and also helps in improving accuracy of our model.\
