@@ -40,7 +40,10 @@ Similarly,
 We shall see A1, A2, A3 later when we see about activation functions.
 
 #### Activation Functions:
-Every output of a node is then passed through an activation function. Most of the times, non linear activation functions are used. Activation functions are a very important part of neural network. It helps in computing the result in desirable form and also helps in improving accuracy of our model.
+Every output of a node is then passed through an activation function. Most of the times, non linear activation functions are used. Activation functions are a very important part of neural network. It helps in computing the result in desirable form and also helps in improving accuracy of our model.\
+It is denoted by A(Z). A(Z) means the output when activation function of Z.
+Similarly, A(Z1) means activation function of Z1.
+
 There are many types of activation functions but some of the popular activation functions are:
 1. Threshold Activation Function
 2. Sigmoid Function
@@ -50,8 +53,13 @@ There are many types of activation functions but some of the popular activation 
 ##### 1. Threshold activation function
 ![](images/threshold.png)
 
+It is equal to 1 when x>=0 and 0 when x<0.
+![](images/thresh_func.PNG)
+
 ##### 2. Sigmoid activation function
 ![](images/sigmoid.png)
+
+
 
 ##### 3. Tanh activation function
 ![](images/tanh.png)
