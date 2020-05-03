@@ -139,3 +139,7 @@ A4 = f(Z4)
 
 ##### The prediction of neural network would be equal to A4.
 #####                    y_pred = A4
+
+### Computing cost function
+The cost function represented by **J** is computed by comparing the predicted vector with the true vector for binary classification and is computed by the **formula**
+![](images/cost_function.png)
