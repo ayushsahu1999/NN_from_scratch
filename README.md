@@ -125,3 +125,17 @@ This activation function is the first choice of many experienced people in deep 
 
 #### Forward Propagation
 Forward Propagation is nothing but series of matrix multiplications along the depth of the network, where the weights of current layer is taken dot product with the activation matrix of previous layers.
+
+![](images/forw_prop.png)
+
+Z1 = W[1].T.A[0] + b(if present)
+A1 = f(Z1)
+Z2 = W[2].T.A[1] + b
+A2 = f(Z2)
+Z3 = W[3].T.A[2] + b
+A3 = f(Z3)
+Z4 = W[4].T.A[3] + b
+A4 = f(Z4)
+
+##### The prediction of neural network would be equal to A4.
+##### y_pred = A4\
