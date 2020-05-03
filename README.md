@@ -11,13 +11,16 @@
 # Image of a perceptron
 ![](images/perceptron.PNG)
 
-### Aperceptron is a single neuron neural network.
+### A perceptron is a single neuron neural network.
 
 # Image of a neural network
 
 ![](images/neural_network.png)
 
 ##### Here the input layer contains 3 units, 1st hidden layer contains 4 units, 2nd hidden layer contains 4 units and the output layer contains 1 unit. This is a 3 layer network because we don't count input layer as a layer.
+
+## What happens inside a neuron?
+![](images/basic.PNG)
 
 ##### Weight matrix
 
