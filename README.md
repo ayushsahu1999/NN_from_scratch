@@ -22,6 +22,30 @@
 ## What happens inside a neuron?
 ![](images/basic.PNG)
 
+
+## How do neural networks work?
+
+### Shallow Neural networks
+The neural networks where there are no hidden layers.
+![](images/shallow.PNG)
+These type of networks are generally not powerful and not used so much.
+
+### Deep Neural networks
+![](images/house_price.PNG)
+
+Suppose we want our network to predict the value of a particular house. We want to predict based on the inputs which are area of house in square meters, number of bedrooms, distance to city and age of the house. We give these inputs in the network and based on these inputs, we want our network to predict the value of the house.
+We then train our network with many training examples(those whose values are known to us from previous experience).
+
+After the network is trained(assume for now),
+it will understand not every weight is important. Some will have zero value, some will have non-zero value.
+
+Suppose, in the first neuron, the neuron is looking for the rooms which are large and not far away from cities. It will activate only when certain criteria is met. It does take account of bedrooms and age.
+
+In the third neuron, the neuron picked area, # of bedrooms and age. Why did it picked all these three parameters not else.
+The neuron may found out that the combination of area, bedrooms and age may be important in that specific city. Maybe in that city, lots of families are looking for large rooms with more bedrooms which are new. From training, the neuron will know that the room with area, bedroom and less age is valued from the training data.
+
+In the last neuron, it will only be based on Age. If the age of the building in that city is above 100 years. Then it will be historic and more valuable. So, as soon as neuron picks it, it will activate.
+
 ##### Weight matrix
 
 The arrows in the neural networks between the layers represents the weights. Weight matrix is the collection of weights of the same layer.
