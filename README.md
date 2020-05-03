@@ -8,6 +8,11 @@
 #### Computing cost
 #### Backward Propagation
 
+# Image of a perceptron
+![](images/perceptron.PNG)
+
+### Aperceptron is a single neuron neural network.
+
 # Image of a neural network
 
 ![](images/neural_network.png)
@@ -28,7 +33,8 @@ For finding the activation/output of first hidden layer, we have to do the dot p
 Zn[m] -->  output of nth node in layer m\
 Z1[1] -->  output of 1st node in layer 1\
 Z2[1] -->  output of 2nd node in layer 1\
-Z3[1] -->  output of 3rd node in layer 1
+Z3[1] -->  output of 3rd node in layer 1\
+Z4[1] -->  output of 4th node in layer 1
 
 ![](images/Z1.PNG)
 
