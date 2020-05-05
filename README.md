@@ -143,3 +143,5 @@ A4 = f(Z4)
 ### Computing cost function
 The cost function represented by **J** is computed by comparing the predicted vector with the true vector for binary classification and is computed by the **formula**
 ![](images/cost_function.png)
+
+The cost function J is different for each iteration of gradient descent.
