@@ -177,7 +177,20 @@ Then finally we get to the minimum.
 ![](images/grad_working.png)
 The arrows with names which have 'd' in the beginning are the derivatives of their respective parameters. It represents how much the parameters be adjusted.
 The parameters are adjusted by the formula:\
-**W1 = W1 - (learning rate) * dW1\**
-**W2 = W2 - (learning rate) * dW2\**
-**W3 = W3 - (learning rate) * dW3\**
-**W4 = W4 - (learning rate) * dW4\**
+**W1 = W1 - (learning rate) \* dW1**\
+**W2 = W2 - (learning rate) \* dW2**\
+**W3 = W3 - (learning rate) \* dW3\**\
+**W4 = W4 - (learning rate) \* dW4\**\
+
+#### How to calculate all parameters and derivatives of parameters
+##### Some terminology
+dZ[L] --> derivative vector of Z in Lth layer in L layer network.
+dW[L] --> derivative of weight matrix in Lth layer in L layer neural network.
+db[L] --> derivative of bias vector in Lth layer in L layer neural network.
+dZ[l] --> derivative vector of Z in lth layer in L layer network.
+dW[l] --> derivative of weight matrix in lth layer in L layer neural network.
+db[l] --> derivative of bias vector in Lth layer in l layer neural network.
+g' --> derivative of activation function g
+m --> number of examples in training set.
+
+![](images/formulas.png)
