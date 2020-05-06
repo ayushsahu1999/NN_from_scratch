@@ -145,3 +145,14 @@ The cost function represented by **J** is computed by comparing the predicted ve
 ![](images/cost_function.png)
 
 The cost function J is different for each iteration of gradient descent.
+It will then adjust the values of weights and biases so that in next iteration of gradient descent, the value of cost function decreases.
+
+#### Backpropagation
+Backpropagation, short for "backward propagation of errors," is an algorithm for supervised learning of artificial neural networks using gradient descent. Given an artificial neural network and an error function, the method calculates the gradient of the error function with respect to the neural network's weights.
+
+##### Gradient Descent
+Gradient descent is an optimization algorithm used to minimize some function by iteratively moving in the direction of steepest descent as defined by the negative of the gradient. In machine learning, we use gradient descent to update the parameters of our model.
+
+
+
+##### Backpropagation in a single neuron
