@@ -171,6 +171,13 @@ In this method, we plot the cost function.
 Then we have to start from somewhere. We find the slope of the point, if negative then go to right, if positive then go to left.
 Then finally we get to the minimum.
 ![](images/gradient_descent_demystified.png)
-
+**Learning Rate** is the amount of distance it covers in one step.
 
 ##### Backpropagation in a single neuron
+![](images/grad_working.png)
+The arrows with names which have 'd' in the beginning are the derivatives of their respective parameters. It represents how much the parameters be adjusted.
+The parameters are adjusted by the formula:
+**W1 = W1 - (learning rate) * dW1**
+**W2 = W2 - (learning rate) * dW2**
+**W3 = W3 - (learning rate) * dW3**
+**W4 = W4 - (learning rate) * dW4**
