@@ -153,6 +153,19 @@ Backpropagation, short for "backward propagation of errors," is an algorithm for
 ##### Gradient Descent
 Gradient descent is an optimization algorithm used to minimize some function by iteratively moving in the direction of steepest descent as defined by the negative of the gradient. In machine learning, we use gradient descent to update the parameters of our model.
 
+###### Example to show how Gradient Descent Works
+Suppose we calculated the cost function for different values of weights(W) and plotted the cost function with respect to W.
+Now the question is **how can we minimize cost function**?
+One method is by **brute force**.
+Let's say we have 1000 weights to the network(single neuron or perceptron) and for each value, a cost function(c) is  calculated. We then choose the lowest value of c.
+But this is for a single neuron network. What we will do when we have multiple synapses?
 
+This is known as **Curse of Dimensionality**.
+**Curse of Dimensionality** means so much information that no computer could handle it. So this is a very impractical method.
+
+So, we use **Gradient Descent**.
+In this method, we plot the cost function.
+
+![](gradient_descent.png)
 
 ##### Backpropagation in a single neuron
