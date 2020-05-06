@@ -166,11 +166,11 @@ This is known as **Curse of Dimensionality**.
 So, we use **Gradient Descent**.
 In this method, we plot the cost function.
 
-![](gradient_descent.png)
+![](images/gradient_descent.png)
 
 Then we have to start from somewhere. We find the slope of the point, if negative then go to right, if positive then go to left.
 Then finally we get to the minimum.
-![](gradient_descent_demystified.png)
+![](images/gradient_descent_demystified.png)
 
 
 ##### Backpropagation in a single neuron
