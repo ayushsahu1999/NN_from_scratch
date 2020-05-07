@@ -2,6 +2,7 @@
 
 ## This repository is made for the sole purpose of implementing and showing how to implement Neural Network from scratch
 ### For this I have used the dataset of a bank which contains the data about different customers and whether they left the bank or not
+### One important thinng to note here that this in no means is a walkthrough tutorial of neural networks, some basic knowledge of neural network is necessary.
 
 ### For implementing a Neural Network, there are 3 main steps:
 #### Forward Propagation
