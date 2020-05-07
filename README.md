@@ -32,6 +32,10 @@ The neural networks where there are no hidden layers.
 These type of networks are generally not powerful and not used so much.
 
 ### Deep Neural networks
+![](images/deepnn.jpg)
+
+
+### Neural Network Example
 ![](images/house_price.PNG)
 
 Suppose we want our network to predict the value of a particular house. We want to predict based on the inputs which are area of house in square meters, number of bedrooms, distance to city and age of the house. We give these inputs in the network and based on these inputs, we want our network to predict the value of the house.
@@ -195,3 +199,5 @@ g' --> derivative of activation function g.\
 m --> number of examples in training set.
 
 ![](images/formulas.png)
+
+This is just a simple low level explaination of how neural networks. Later, I will try to show how to optimize neural networks and increase its performance.
