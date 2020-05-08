@@ -66,12 +66,12 @@ Zn[m] -->  output of nth node in layer m\
 Z1[1] -->  output of 1st node in layer 1\
 Z2[1] -->  output of 2nd node in layer 1\
 Z3[1] -->  output of 3rd node in layer 1\
-Z4[1] -->  output of 4th node in layer 1\
+Z4[1] -->  output of 4th node in layer 1
 
 Z1[2] -->  output of 1st node in layer 2\
 Z2[2] -->  output of 2nd node in layer 2\
 Z3[2] -->  output of 3rd node in layer 2\
-Z4[2] -->  output of 4th node in layer 2\
+Z4[2] -->  output of 4th node in layer 2
 
 Z1[3] -->  output of 1st node in layer 3 or output node
 
