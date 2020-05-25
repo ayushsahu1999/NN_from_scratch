@@ -30,11 +30,24 @@ def relu_der(x):
     return x
 
 def sigmoid_backward(dA, cache):
-    dZ = np.multiply(dA, sigmoid_der(cache))
+    Z = cache
+    
+    s = 1/(1+np.exp(-Z))
+    dZ = dA * s * (1-s)
+    
+    assert (dZ.shape == Z.shape)
+    
     return dZ
 
 def relu_backward(dA, cache):
-    dZ = np.multiply(dA, relu_der(cache))
+    Z = cache
+    dZ = np.array(dA, copy=True) # just converting dz to a correct object.
+    
+    # When z <= 0, you should set dz to 0 as well. 
+    dZ[Z <= 0] = 0
+    
+    assert (dZ.shape == Z.shape)
+    
     return dZ
     
 
@@ -68,7 +81,7 @@ def linear_activation_backward(dA, cache, activation):
     elif activation == 'sigmoid':
         dZ = sigmoid_backward(dA, activation_cache)
         
-        assert (dZ.shape == (1, 8000))
+        #assert (dZ.shape == (1, 8000))
         dA_prev, dW, db = linear_backward(dZ, linear_cache)
     return dA_prev, dW, db
 

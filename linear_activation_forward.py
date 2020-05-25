@@ -52,8 +52,35 @@ def L_model_forward(X, parameters):
                                                   activation = 'sigmoid')
     caches.append(cache)
     
+    
+    
     #assert (AL.shape == (y_train.shape[0], y_train.shape[1]))
     return AL, caches
 
 #AL, caches = L_model_forward(X_train, par)
+def forward_prop_check(X, Y, parameters):
+    caches = []
+    A = X
+    L = len(parameters) // 2  # number of layers 
+    for l in range(1, L):
+        A_prev = A
+        A, cache = lin_act_forward(A_prev, parameters["W"+str(l)], parameters["b"+str(l)],
+                                                      activation = 'relu')
+        caches.append(cache)
+    
+    AL, cache = lin_act_forward(A, parameters["W"+str(L)], parameters["b"+str(L)],
+                                                  activation = 'sigmoid')
+    caches.append(cache)
+    
+    m = Y.shape[1]
+    
+    logprobs = np.multiply(-np.log(AL),Y) + np.multiply(-np.log(1 - AL), 1 - Y)
+    cost = 1./m * np.sum(logprobs)
+    cost = np.squeeze(cost)  # [[10]] --> 10
+    assert (cost.shape == ())
+    
+    
+    #assert (AL.shape == (y_train.shape[0], y_train.shape[1]))
+    return cost, caches
+
 

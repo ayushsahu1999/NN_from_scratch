@@ -9,14 +9,20 @@ Created on Thu Apr 30 15:14:07 2020
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from gradient_checking import grad_check
 
-def update_params(parameters, grads, learning_rate):
+def update_params(X, Y, parameters, grads, learning_rate, check=False):
     L = len(parameters) // 2
+    diff = 1e-8
+    if check:
+        diff = grad_check(parameters, grads, X, Y)
+        if (diff>2e-7):
+            print (diff)
     for l in range(L):
         parameters["W"+str(l+1)] = parameters["W"+str(l+1)] - learning_rate * grads["dW"+str(l+1)]
         parameters["b"+str(l+1)] = parameters["b"+str(l+1)] - learning_rate * grads["db"+str(l+1)]
         
-    return parameters
+    return parameters, diff
 
 """
 from linear_activation_forward import L_model_forward

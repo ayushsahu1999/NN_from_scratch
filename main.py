@@ -17,7 +17,7 @@ def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, 
     from cost_func import compute_cost
     from backpropagation import L_model_backward
     from update_parameters import update_params
-    import math
+    from gradient_checking import grad_check
     
     """
     Implements L layer neural network
@@ -25,9 +25,9 @@ def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, 
     """
     costs = []
     
-    s = math.sqrt(2/X.shape[0])
+    #s = math.sqrt(2/X.shape[0])
     # Parameters Initialization
-    parameters = para_init(layers_dims, s)
+    parameters = para_init(layers_dims)
     
     # Gradient Descent
     for i in range(0, num_iterations):
@@ -41,8 +41,15 @@ def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, 
         # Backward propagation
         grads = L_model_backward(AL, Y, caches)
         
+        # gradient checking
+        if (i==0 or i==100 or i==500 or i==3000):
+            parameters, diff = update_params(X, Y, parameters, grads, learning_rate, check=True)
+            if diff>2e-7:
+                break
+        
         # Update parameters
-        parameters = update_params(parameters, grads, learning_rate)
+        parameters, diff = update_params(X, Y, parameters, grads, learning_rate, check=False)
+        
         
         # Print the cost after 100 training examples
         if print_cost and i%100==0:

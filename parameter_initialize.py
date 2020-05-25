@@ -12,13 +12,13 @@ import pandas as pd
 
 
 # Initializing the parameters
-def para_init(layers_dims, scale):
+def para_init(layers_dims):
     #from data_init import dat_init
     #X_train, y_train, X_test, y_test = dat_init()
     parameters = {}
     L = len(layers_dims)
     for l in  range(1, L):
-        parameters["W"+str(l)] = np.random.randn(layers_dims[l], layers_dims[l-1]) * scale
+        parameters["W"+str(l)] = np.random.randn(layers_dims[l], layers_dims[l-1]) * (np.sqrt(2/layers_dims[l-1]))
         parameters["b"+str(l)] = np.ones((layers_dims[l], 1)) * 0.01
         
         assert(parameters["W"+str(l)].shape == (layers_dims[l], layers_dims[l-1]))
