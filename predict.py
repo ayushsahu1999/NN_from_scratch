@@ -6,16 +6,20 @@ Created on Fri May  1 12:12:48 2020
 """
 
 # Importing the libraries
-from main import L_layer_model
+from main import L_layer_model, adam_model
 from data_init import dat_init
 from linear_activation_forward import L_model_forward
 import numpy as np
 X_train, y_train, X_test, y_test = dat_init()
 #layers_dims = [11, 10, 8, 1]
 layers_dims = [11, 10, 10, 5, 1]
+parameters = adam_model(X_train, y_train, layers_dims,
+                           learning_rate=0.4, mini_batch_size=64, num_epochs=3000,
+                           print_cost=True, decay=True)
+'''
 parameters = L_layer_model(X_train, y_train, layers_dims,
                            learning_rate=0.4, num_iterations=5000, print_cost=True)
-
+'''
 def pred(X, Y, parameters):
     y_pred, caches = L_model_forward(X, parameters)
     return y_pred
@@ -137,6 +141,14 @@ Using alpha = 0.1:
     layers_dims = [11, 10, 10, 5, 5, 1]
     train accuracy: 86.16
     test accuracy: 86.25
+    --> UnderFit (High Bias)
+'''
+'''
+Using alpha = 0.4(adam):
+    num_iterations = 5000
+    layers_dims = [11, 10, 10, 5, 1]
+    train accuracy: 79.6
+    test accuracy: 79.75
     --> UnderFit (High Bias)
 '''
 
