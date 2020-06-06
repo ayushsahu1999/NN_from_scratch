@@ -21,6 +21,7 @@ def para_init(layers_dims):
         parameters["W"+str(l)] = np.random.randn(layers_dims[l], layers_dims[l-1]) * (np.sqrt(2/layers_dims[l-1]))
         parameters["b"+str(l)] = np.ones((layers_dims[l], 1)) * 0.01
         
+        
         assert(parameters["W"+str(l)].shape == (layers_dims[l], layers_dims[l-1]))
         assert(parameters["b"+str(l)].shape == (layers_dims[l], 1))
     return parameters

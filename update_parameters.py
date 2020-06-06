@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from gradient_checking import grad_check
 
-def update_params(parameters, grads, learning_rate):
+def update_params(parameters, b_par, grads, learning_rate):
     L = len(parameters) // 2
     '''
     diff = 1e-8
@@ -24,12 +24,14 @@ def update_params(parameters, grads, learning_rate):
         parameters["W"+str(l+1)] = parameters["W"+str(l+1)] - learning_rate * grads["dW"+str(l+1)]
         parameters["b"+str(l+1)] = parameters["b"+str(l+1)] - learning_rate * grads["db"+str(l+1)]
         
+        b_par["gamma"+str(l+1)] = b_par["gamma"+str(l+1)] - learning_rate * grads["dgamma"+str(l+1)]
+        b_par["beta"+str(l+1)] = b_par["beta"+str(l+1)] - learning_rate * grads["dbeta"+str(l+1)]
     return parameters
 
 
 
 
-def update_parameters_with_adam(parameters, grads, v, s, t, learning_rate=0.01, beta1=0.9, beta2=0.999, epsilon=1e-8):
+def update_parameters_with_adam(parameters, b_par, grads, v, s, t, learning_rate=0.01, beta1=0.9, beta2=0.999, epsilon=1e-8):
     
     L = len(parameters) // 2
     v_corrected = {}
@@ -38,20 +40,44 @@ def update_parameters_with_adam(parameters, grads, v, s, t, learning_rate=0.01, 
     for l in range(L):
         v["dW"+str(l+1)] = beta1*v["dW"+str(l+1)] + (1-beta1)*grads["dW"+str(l+1)]
         v["db"+str(l+1)] = beta1*v["db"+str(l+1)] + (1-beta1)*grads["db"+str(l+1)]
+        v["dgamma"+str(l+1)] = beta1*v["dgamma"+str(l+1)] + (1-beta1)*grads["dgamma"+str(l+1)]
+        v["dbeta"+str(l+1)] = beta1*v["dbeta"+str(l+1)] + (1-beta1)*grads["dbeta"+str(l+1)]
+        
         v_corrected["dW"+str(l+1)] = v["dW"+str(l+1)] / (1 - beta1**t)
         v_corrected["db"+str(l+1)] = v["db"+str(l+1)] / (1 - beta1**t)
+        v_corrected["dgamma"+str(l+1)] = v["dgamma"+str(l+1)] / (1 - beta1**t)
+        v_corrected["dbeta"+str(l+1)] = v["dbeta"+str(l+1)] / (1 - beta1**t)
         
         s["dW"+str(l+1)] = beta2*s["dW"+str(l+1)] + (1-beta2)*np.square(grads["dW"+str(l+1)])
         s["db"+str(l+1)] = beta2*s["db"+str(l+1)] + (1-beta2)*np.square(grads["db"+str(l+1)])
+        s["dgamma"+str(l+1)] = beta2*s["dgamma"+str(l+1)] + (1-beta2)*np.square(grads["dgamma"+str(l+1)])
+        s["dbeta"+str(l+1)] = beta2*s["dbeta"+str(l+1)] + (1-beta2)*np.square(grads["dbeta"+str(l+1)])
+        
         s_corrected["dW"+str(l+1)] = s["dW"+str(l+1)] / (1 - beta2**t)
         s_corrected["db"+str(l+1)] = s["db"+str(l+1)] / (1 - beta2**t)
+        s_corrected["dgamma"+str(l+1)] = s["dgamma"+str(l+1)] / (1 - beta2**t)
+        s_corrected["dbeta"+str(l+1)] = s["dbeta"+str(l+1)] / (1 - beta2**t)
         
         parameters["W"+str(l+1)] = parameters["W"+str(l+1)] - learning_rate*(v_corrected["dW"+str(l+1)]/(np.sqrt(s_corrected["dW"+str(l+1)])+epsilon))
         parameters["b"+str(l+1)] = parameters["b"+str(l+1)] - learning_rate*(v_corrected["db"+str(l+1)]/(np.sqrt(s_corrected["db"+str(l+1)])+epsilon))
+        b_par["gamma"+str(l+1)] = b_par["gamma"+str(l+1)] - learning_rate*(v_corrected["dgamma"+str(l+1)]/(np.sqrt(s_corrected["dgamma"+str(l+1)])+epsilon))
+        b_par["beta"+str(l+1)] = b_par["beta"+str(l+1)] - learning_rate*(v_corrected["dbeta"+str(l+1)]/(np.sqrt(s_corrected["dbeta"+str(l+1)])+epsilon))
         
-    return parameters, v, s
-    
-    
+    return parameters, b_par, v, s
+
+def update_parameters_with_momentum(parameters, b_par, grads, v, beta, learning_rate):
+    L = len(parameters) // 2
+    for l in range(L):
+        v["dW"+str(l+1)] = beta*v["dW"+str(l+1)] + (1 - beta)*grads["dW"+str(l+1)]
+        v["db"+str(l+1)] = beta*v["db"+str(l+1)] + (1-beta)*grads["db"+str(l+1)]
+        v["dgamma"+str(l+1)] = beta*v["dgamma"+str(l+1)] + (1-beta)*grads["dgamma"+str(l+1)]
+        v["dbeta"+str(l+1)] = beta*v["dbeta"+str(l+1)] + (1-beta)*grads["dbeta"+str(l+1)]
+        
+        parameters["W"+str(l+1)] = parameters["W"+str(l+1)] - learning_rate*(v["dW"+str(l+1)])
+        parameters["b"+str(l+1)] = parameters["b"+str(l+1)] - learning_rate*(v["db"+str(l+1)])
+        b_par["gamma"+str(l+1)] = b_par["gamma"+str(l+1)] - learning_rate*(v["dgamma"+str(l+1)])
+        b_par["beta"+str(l+1)] = b_par["beta"+str(l+1)] - learning_rate*(v["dbeta"+str(l+1)])
+    return parameters, b_par, v
     
     
     

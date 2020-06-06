@@ -29,19 +29,20 @@ def dat_init():
     # Splitting the dataset into the Training set and Test set
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+    X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size = 0.25, random_state = 0)
+    
     
     # Feature Scaling
     from sklearn.preprocessing import StandardScaler
     sc = StandardScaler()
     X_train = sc.fit_transform(X_train)
     X_test = sc.transform(X_test)
+    X_val = sc.transform(X_val)
     y_train = y_train.reshape(-1, 1)
     y_test = y_test.reshape(-1, 1)
+    y_val = y_val.reshape(-1, 1)
     X_train, y_train, X_test, y_test = X_train.T, y_train.T, X_test.T, y_test.T
-    assert(X_train.shape == (11, 8000))
-    assert(X_test.shape == (11, 2000))
-    assert(y_train.shape == (1, 8000))
-    assert(y_test.shape == (1, 2000))
-    return X_train, y_train, X_test, y_test
+    X_val, y_val = X_val.T, y_val.T
+    return X_train, y_train, X_test, y_test, X_val, y_val
 
 #X_train, y_train, X_test, y_test = par_init()
