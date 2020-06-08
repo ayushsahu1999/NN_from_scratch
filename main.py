@@ -14,6 +14,7 @@ def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, 
     import matplotlib.pyplot as plt
     import pandas as pd
     from linear_activation_forward import L_model_forward
+    
     from parameter_initialize import para_init
     from cost_func import compute_cost
     from backpropagation import L_model_backward
@@ -77,8 +78,8 @@ def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, 
     return parameters
 
 
-def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate = 0.0005,
-               learning_rate=0.0007, mini_batch_size=64, beta=0.9, beta1=0.9,
+def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate = 0.0005, dropout=True, keep_prob=0.5,
+               learning_rate=0.0007, mini_batch_size=64, mode='train', beta=0.9, beta1=0.9,
                beta2=0.999, epsilon=1e-8, num_epochs=10000, print_cost=True, decay=False):
     
     # Import libraries
@@ -87,9 +88,11 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate = 0.0005,
     import matplotlib.pyplot as plt
     import pandas as pd
     from linear_activation_forward import L_model_forward
+    from linear_activation_forward_with_dropout import L_model_forward as ldr
     from parameter_initialize import para_init
     from cost_func import compute_cost
     from backpropagation import L_model_backward
+    from backpropagation_with_dropout import L_model_backward as bdr
     from update_parameters import update_parameters_with_adam, update_parameters_with_momentum
     from adam import initialize_adam
     from batch_norm import forward_prop, batch_norm_init, back_prop
@@ -103,11 +106,13 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate = 0.0005,
     # Initialize parameters
     parameters = para_init(layers_dims)
     b_par = batch_norm_init(layers_dims)
+    b_par['mode'] = mode
+    b_par['running_means'] = []
+    b_par['running_vars'] = []
     
     v, s = initialize_adam(parameters, b_par)
     alpha = learning_rate # initial learning rate
-    v_mu = [0] * L
-    v_sigma = [0] * (L+1)
+    
     
     # Optimization loop
     for i in range(num_epochs):
@@ -118,14 +123,33 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate = 0.0005,
             # select a mini-batch
             (mini_batch_X, mini_batch_Y) = mini_batch
             
+#            print ('Before propagation')
+#            print (b_par['gamma1'].shape)
+            
             # Forward propagation
-            AL, caches, v_mu, v_sigma = L_model_forward(mini_batch_X, parameters, b_par, v_mu, v_sigma)
+            if dropout:
+                AL, caches, b_par = ldr(mini_batch_X, parameters, b_par, keep_prob=keep_prob)
+            else:
+                AL, caches, b_par = L_model_forward(mini_batch_X, parameters, b_par)
+            
+#            print ('After forward propagation')
+#            print (b_par['gamma1'].shape)
             
             # Compute cost
             cost_total = cost_total + compute_cost(AL, mini_batch_Y)
+#            print ('Cost: '+str(cost_total))
+            
+#            print ('After cost')
+#            print (b_par['gamma1'].shape)
             
             # Backward propagation
-            grads = L_model_backward(AL, mini_batch_Y, caches)
+            if dropout:
+                grads = bdr(AL, mini_batch_Y, caches, keep_prob)
+            else:
+                grads = L_model_backward(AL, mini_batch_Y, caches)
+            
+#            print ('After backpropagation')
+#            print (b_par['gamma1'].shape)
             
             # Update Parameters
             
@@ -137,6 +161,11 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate = 0.0005,
             elif (optimizer == 'momentum'):
                 parameters, b_par, v = update_parameters_with_momentum(parameters, b_par, grads, v, beta, learning_rate)
             
+#            print ('Mini-batch: ' + str(len(mini_batch)))
+#            print ('After parameters update')
+#            print (b_par['gamma1'].shape)
+#            print (grads['dgamma1'].shape)
+            
             
         cost_avg = cost_total / m
         
@@ -144,7 +173,7 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate = 0.0005,
         if print_cost and i%100==0:
             
             print ("Cost after epoch %i: %f"%(i, cost_avg))
-        if print_cost and i%100==0:
+        if i%100==0:
             costs.append(cost_avg)
     
     # plot the costs
@@ -154,7 +183,7 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate = 0.0005,
     plt.title('Learning rate = '+str(learning_rate))
     plt.show()
     
-    return parameters, b_par, v_mu, v_sigma
+    return parameters, b_par
 
 
 """
@@ -172,9 +201,9 @@ from minibatches import create_minibatch
 from data_init import dat_init
 X_train, y_train, X_test, y_test, X_val, y_val = dat_init()
 #layers_dims = [11, 20, 10, 10, 1]
-#parameters, b_par, v_mu, v_sigma = adam_model(X_train, y_train, layers_dims, optimizer='adam', decay_rate=0.002,
-#                           learning_rate=0.01, mini_batch_size=64, num_epochs=1500,
-#                           beta1=0.9, print_cost=True, decay=False)
+parameters, b_par = adam_model(X_train, y_train, layers_dims, optimizer='adam', decay_rate=0.002,
+                           learning_rate=0.01, mini_batch_size=64, num_epochs=1500,
+                           beta1=0.9, print_cost=True, decay=False)
 #parameters, b_par = L_layer_model(X_train, y_train, layers_dims, learning_rate=0.1, num_iterations=4000, print_cost=True)
 
 

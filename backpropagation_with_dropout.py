@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 29 21:42:28 2020
+Created on Mon Jun  8 12:00:23 2020
 
 @author: Dell
 """
@@ -51,7 +51,7 @@ def relu_backward(dA, cache):
     return dZ
     
 
-def linear_backward(dZ, cache):
+def linear_backward(dZ, cache, keep_prob):
     """
     dZ -> Gradient of cost w.r.t linear output
     cache -> (A_prev, W, b)
@@ -59,16 +59,18 @@ def linear_backward(dZ, cache):
     db -> gradient of cost w.r.t b
     dA_prev -> gradient of cost w.r.t activation of previous layer
     """
-    A_prev, W, b = cache
+    A_prev, W, b, D = cache
     
     m = A_prev.shape[1]
     t = np.dot(dZ, A_prev.T)
     dW = np.multiply(1/m, t)
     db = (1/m)*np.sum(dZ, axis=1, keepdims=True)
     dA_prev = np.dot(W.T, dZ)
+    dA_prev = np.multiply(dA_prev, D)
+    dA_prev = dA_prev / keep_prob
     return dA_prev, dW, db
 
-def linear_activation_backward(dA, cache, activation):
+def linear_activation_backward(dA, cache, keep_prob, activation):
     """
     dA -> post activation gradient
     cache -> (linear_cache, activation_cache)
@@ -80,16 +82,22 @@ def linear_activation_backward(dA, cache, activation):
         dout = relu_backward(dA, activation_cache)
         #Z, Z_norm, Z_centered, std, gamma = activation_cache
         dZ, dgamma, dbeta = back_prop(dout, activation_cache)
-        dA_prev, dW, db = linear_backward(dZ, linear_cache)
+        dZ = np.multiply(dA, np.int64(dA>0))
+        
+        
+        
+        dA_prev, dW, db = linear_backward(dZ, linear_cache, keep_prob)
     elif activation == 'sigmoid':
         dout = sigmoid_backward(dA, activation_cache)
         #Z, mu, sigma, Z_norm, gamma, beta = activation_cache
         dZ, dgamma, dbeta = back_prop(dout, activation_cache)
         #assert (dZ.shape == (1, 8000))
-        dA_prev, dW, db = linear_backward(dZ, linear_cache)
+        dA_prev, dW, db = linear_backward(dZ, linear_cache, keep_prob)
+        
+        
     return dA_prev, dW, db, dgamma, dbeta
 
-def L_model_backward(AL, Y, caches):
+def L_model_backward(AL, Y, caches, keep_prob):
     from batch_norm import forward_prop, batch_norm_init, back_prop
     grads = {}
     L = len(caches)
@@ -100,33 +108,16 @@ def L_model_backward(AL, Y, caches):
     # Lth layer
     current_cache = caches[L-1]
     
-    grads["dA"+str(L-1)], grads["dW"+str(L)], grads["db"+str(L)], grads["dgamma"+str(L)], grads["dbeta"+str(L)] = linear_activation_backward(dAL, current_cache, activation='sigmoid')
+    grads["dA"+str(L-1)], grads["dW"+str(L)], grads["db"+str(L)], grads["dgamma"+str(L)], grads["dbeta"+str(L)] = linear_activation_backward(dAL, current_cache, keep_prob, activation='sigmoid')
     
     # loop from L-2 to 0
     for l in reversed(range(L-1)):
         # Relu -> Linear
         current_cache = caches[l]
-        dA_prev_temp, dW_temp, db_temp, dgamma_temp, dbeta_temp = linear_activation_backward(grads["dA"+str(l+1)], current_cache, activation='relu')
+        dA_prev_temp, dW_temp, db_temp, dgamma_temp, dbeta_temp = linear_activation_backward(grads["dA"+str(l+1)], current_cache, keep_prob, activation='relu')
         grads["dA"+str(l)] = dA_prev_temp
         grads["dW"+str(l+1)] = dW_temp
         grads["db"+str(l+1)] = db_temp
         grads["dgamma"+str(l+1)] = dgamma_temp
         grads["dbeta"+str(l+1)] = dbeta_temp
     return grads
-
-
-'''
-from linear_activation_forward import L_model_forward
-from parameter_initialize import para_init
-from data_init import dat_init
-from cost_func import compute_cost
-from batch_norm import back_prop, batch_norm_init
-X_train, y_train, X_test, y_test, X_val, y_val = dat_init()
-layers_dims = [11, 20, 10, 10, 1]
-par = para_init(layers_dims)
-b_par = batch_norm_init(layers_dims)
-AL, caches = L_model_forward(X_train, par, b_par)
-cost = compute_cost(AL, y_train)
-print (cost)
-gradients = L_model_backward(AL, y_train, caches)
-'''
