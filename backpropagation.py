@@ -29,8 +29,11 @@ def relu_der(x):
     assert (x.shape == (w, h))
     return x
 
-def sigmoid_backward(dA, cache):
-    Z, _, a, b, g = cache
+def sigmoid_backward(dA, cache, batch_norm):
+    if batch_norm:
+        Z, _, a, b, g = cache
+    else:
+        Z = cache
     
     s = 1/(1+np.exp(-Z))
     dZ = dA * s * (1-s)
@@ -39,8 +42,11 @@ def sigmoid_backward(dA, cache):
     
     return dZ
 
-def relu_backward(dA, cache):
-    Z, _, a, b, g = cache
+def relu_backward(dA, cache, batch_norm):
+    if batch_norm:
+        Z, _, a, b, g = cache
+    else:
+        Z = cache
     dZ = np.array(dA, copy=True) # just converting dz to a correct object.
     
     # When z <= 0, you should set dz to 0 as well. 
@@ -68,7 +74,7 @@ def linear_backward(dZ, cache):
     dA_prev = np.dot(W.T, dZ)
     return dA_prev, dW, db
 
-def linear_activation_backward(dA, cache, activation):
+def linear_activation_backward(dA, cache, batch_norm, activation):
     """
     dA -> post activation gradient
     cache -> (linear_cache, activation_cache)
@@ -77,19 +83,25 @@ def linear_activation_backward(dA, cache, activation):
     from batch_norm import forward_prop, batch_norm_init, back_prop
     linear_cache, activation_cache = cache
     if activation == 'relu':
-        dout = relu_backward(dA, activation_cache)
+        dZ = relu_backward(dA, activation_cache, batch_norm)
         #Z, Z_norm, Z_centered, std, gamma = activation_cache
-        dZ, dgamma, dbeta = back_prop(dout, activation_cache)
+        if batch_norm:
+            dZ, dgamma, dbeta = back_prop(dZ, activation_cache)
+        else:
+            dgamma, dbeta = 0, 0
         dA_prev, dW, db = linear_backward(dZ, linear_cache)
     elif activation == 'sigmoid':
-        dout = sigmoid_backward(dA, activation_cache)
+        dZ = sigmoid_backward(dA, activation_cache, batch_norm)
         #Z, mu, sigma, Z_norm, gamma, beta = activation_cache
-        dZ, dgamma, dbeta = back_prop(dout, activation_cache)
+        if batch_norm:
+            dZ, dgamma, dbeta = back_prop(dZ, activation_cache)
+        else:
+            dgamma, dbeta = 0, 0
         #assert (dZ.shape == (1, 8000))
         dA_prev, dW, db = linear_backward(dZ, linear_cache)
     return dA_prev, dW, db, dgamma, dbeta
 
-def L_model_backward(AL, Y, caches):
+def L_model_backward(AL, Y, batch_norm, caches):
     from batch_norm import forward_prop, batch_norm_init, back_prop
     grads = {}
     L = len(caches)
@@ -100,13 +112,13 @@ def L_model_backward(AL, Y, caches):
     # Lth layer
     current_cache = caches[L-1]
     
-    grads["dA"+str(L-1)], grads["dW"+str(L)], grads["db"+str(L)], grads["dgamma"+str(L)], grads["dbeta"+str(L)] = linear_activation_backward(dAL, current_cache, activation='sigmoid')
+    grads["dA"+str(L-1)], grads["dW"+str(L)], grads["db"+str(L)], grads["dgamma"+str(L)], grads["dbeta"+str(L)] = linear_activation_backward(dAL, current_cache, batch_norm, activation='sigmoid')
     
     # loop from L-2 to 0
     for l in reversed(range(L-1)):
         # Relu -> Linear
         current_cache = caches[l]
-        dA_prev_temp, dW_temp, db_temp, dgamma_temp, dbeta_temp = linear_activation_backward(grads["dA"+str(l+1)], current_cache, activation='relu')
+        dA_prev_temp, dW_temp, db_temp, dgamma_temp, dbeta_temp = linear_activation_backward(grads["dA"+str(l+1)], current_cache, batch_norm, activation='relu')
         grads["dA"+str(l)] = dA_prev_temp
         grads["dW"+str(l+1)] = dW_temp
         grads["db"+str(l+1)] = db_temp
