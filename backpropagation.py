@@ -112,7 +112,15 @@ def L_model_backward(AL, Y, batch_norm, caches):
     # Lth layer
     current_cache = caches[L-1]
     
+    b = 0
+    if batch_norm:
+        b = 1
+        batch_norm = not batch_norm
+    
     grads["dA"+str(L-1)], grads["dW"+str(L)], grads["db"+str(L)], grads["dgamma"+str(L)], grads["dbeta"+str(L)] = linear_activation_backward(dAL, current_cache, batch_norm, activation='sigmoid')
+    
+    if b == 1:
+        batch_norm = not batch_norm
     
     # loop from L-2 to 0
     for l in reversed(range(L-1)):

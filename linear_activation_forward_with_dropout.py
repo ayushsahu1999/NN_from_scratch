@@ -25,7 +25,7 @@ def relu(x):
     return x * (x > 0)
 
 
-def lin_act_forward(A_prev, W, b, b_par, gamma, beta, batch_norm, D, keep_prob, activation):
+def lin_act_forward(A_prev, W, b, b_par, gamma, beta, batch_norm, D_prev, keep_prob, l, activation):
     """
     A_prev -> Activation from previous layer
     W -> Weights
@@ -36,7 +36,7 @@ def lin_act_forward(A_prev, W, b, b_par, gamma, beta, batch_norm, D, keep_prob, 
     if activation == 'sigmoid':
         Z = np.dot(W, A_prev) + b
         if batch_norm:
-            Z_telda, cache, b_par = forward_prop(Z, gamma, beta, b_par)
+            Z_telda, cache, b_par = forward_prop(Z, gamma, beta, b_par, l)
             Z_norm, Z_centered, std, gamma = cache
 
             A, activation_cache = sigmoid(Z_telda), (Z, Z_norm, Z_centered, std, gamma)
@@ -44,12 +44,12 @@ def lin_act_forward(A_prev, W, b, b_par, gamma, beta, batch_norm, D, keep_prob, 
         else:
             A, activation_cache = sigmoid(Z), Z
             
-            
-        linear_cache = (A_prev, W, b, D)
+        D = D_prev
+        linear_cache = (A_prev, W, b, D_prev)
     elif activation == 'relu':
         Z = np.dot(W, A_prev) + b
         if batch_norm:
-            Z_telda, cache, b_par = forward_prop(Z, gamma, beta, b_par)
+            Z_telda, cache, b_par = forward_prop(Z, gamma, beta, b_par, l)
             Z_norm, Z_centered, std, gamma = cache
         
             A, activation_cache = relu(Z_telda), (Z, Z_norm, Z_centered, std, gamma)
@@ -58,7 +58,7 @@ def lin_act_forward(A_prev, W, b, b_par, gamma, beta, batch_norm, D, keep_prob, 
             A, activation_cache = relu(Z), Z
             
             
-        linear_cache = (A_prev, W, b, D)
+        linear_cache = (A_prev, W, b, D_prev)
         D = np.random.rand(A.shape[0], A.shape[1])
         D = (D < keep_prob).astype(int)
         A = np.multiply(A, D)
@@ -77,22 +77,24 @@ def L_model_forward(X, parameters, b_par, batch_norm, keep_prob=0.5):
     D = (D < keep_prob).astype(int)
     for l in range(1, L):
         A_prev = A
+        D_prev = D
 #        print (b_par["gamma"+str(l)].shape)
         gamma = b_par["gamma"+str(l)]
         beta = b_par["beta"+str(l)]
         
         
         A, cache, b_par, D = lin_act_forward(A_prev, parameters["W" + str(l)], parameters["b" + str(l)], 
-                                        b_par, gamma, beta, batch_norm, D, keep_prob, activation='relu')
+                                        b_par, gamma, beta, batch_norm, D_prev, keep_prob, l, activation='relu')
         if b_par['mode'] == 'train':
             caches.append(cache)
         
 #    print (b_par["gamma"+str(L)].shape)
     gamma = b_par["gamma"+str(L)]
     beta = b_par["beta"+str(L)]
+    D_prev = D
     
     AL, cache, b_par, D = lin_act_forward(A, parameters["W" + str(L)], parameters["b" + str(L)],
-                                                     b_par, gamma, beta, batch_norm, D, keep_prob, activation='sigmoid')
+                                                     b_par, gamma, beta, batch_norm, D_prev, keep_prob, L, activation='sigmoid')
     
     if b_par['mode'] == 'train':
         caches.append(cache)

@@ -27,7 +27,7 @@ def relu(x):
     return x * (x > 0)
 
 
-def lin_act_forward(A_prev, W, b, b_par, gamma, beta, batch_norm, activation):
+def lin_act_forward(A_prev, W, b, b_par, gamma, beta, batch_norm, l, activation):
     """
     A_prev -> Activation from previous layer
     W -> Weights
@@ -37,18 +37,18 @@ def lin_act_forward(A_prev, W, b, b_par, gamma, beta, batch_norm, activation):
     
     if activation == 'sigmoid':
         Z, linear_cache = np.dot(W, A_prev) + b, (A_prev, W, b)
-        if batch_norm:
-            Z_telda, cache, b_par = forward_prop(Z, gamma, beta, b_par)
-            Z_norm, Z_centered, std, gamma = cache
-
-            A, activation_cache = sigmoid(Z_telda), (Z, Z_norm, Z_centered, std, gamma)
-        else:
-            A, activation_cache = sigmoid(Z), Z
+#        if batch_norm:
+#            Z_telda, cache, b_par = forward_prop(Z, gamma, beta, b_par, l)
+#            Z_norm, Z_centered, std, gamma = cache
+#
+#            A, activation_cache = sigmoid(Z_telda), (Z, Z_norm, Z_centered, std, gamma)
+#        else:
+        A, activation_cache = sigmoid(Z), Z
 
     elif activation == 'relu':
         Z, linear_cache = np.dot(W, A_prev) + b, (A_prev, W, b)
         if batch_norm:
-            Z_telda, cache, b_par = forward_prop(Z, gamma, beta, b_par)
+            Z_telda, cache, b_par = forward_prop(Z, gamma, beta, b_par, l)
             Z_norm, Z_centered, std, gamma = cache
             
             A, activation_cache = relu(Z_telda), (Z, Z_norm, Z_centered, std, gamma)
@@ -71,7 +71,7 @@ def L_model_forward(X, parameters, b_par, batch_norm):
         beta = b_par["beta"+str(l)]
         
         A, cache, b_par = lin_act_forward(A_prev, parameters["W" + str(l)], parameters["b" + str(l)], 
-                                        b_par, gamma, beta, batch_norm, activation='relu')
+                                        b_par, gamma, beta, batch_norm, l, activation='relu')
         if b_par['mode'] == 'train':
             caches.append(cache)
         
@@ -80,7 +80,7 @@ def L_model_forward(X, parameters, b_par, batch_norm):
     beta = b_par["beta"+str(L)]
     
     AL, cache, b_par = lin_act_forward(A, parameters["W" + str(L)], parameters["b" + str(L)],
-                                                     b_par, gamma, beta, batch_norm, activation='sigmoid')
+                                                     b_par, gamma, beta, batch_norm, L, activation='sigmoid')
     
     if b_par['mode'] == 'train':
         caches.append(cache)

@@ -12,22 +12,22 @@ def batch_norm_init(layers_dims):
     parameters = {}
     L = len(layers_dims)
     for l in range(1, L):
-        parameters["gamma" + str(l)] = np.random.randn(layers_dims[l], 1) * 0.01
-        parameters["beta" + str(l)] = np.random.randn(layers_dims[l], 1) * 0.01
+        parameters["gamma" + str(l)] = np.random.rand(layers_dims[l], 1)
+        parameters["beta" + str(l)] = np.random.rand(layers_dims[l], 1)
     return parameters
 
 
 # Forward Propagation
-def forward_prop(Z, gamma, beta, bn_params):
+def forward_prop(Z, gamma, beta, bn_params, l):
     mode = bn_params['mode']
     eps = bn_params.get('eps', 1e-5)
     momentum = bn_params.get('momentum', 0.9)
 
     n = Z.shape[0]
-    running_mean = np.zeros(n, dtype=Z.dtype).reshape(-1, 1)
-    running_var = np.zeros(n, dtype=Z.dtype).reshape(-1, 1)
-    running_means = bn_params['running_means']
-    running_vars = bn_params['running_vars']
+    running_mean = bn_params.get('running_mean'+str(l), np.zeros(n, dtype=Z.dtype).reshape(-1, 1))
+    running_var = bn_params.get('running_var'+str(l), np.zeros(n, dtype=Z.dtype).reshape(-1, 1))
+#    running_means = bn_params['running_means']
+#    running_vars = bn_params['running_vars']
 
     if mode == 'train':
         sample_mean = Z.mean(axis=1)
@@ -36,7 +36,7 @@ def forward_prop(Z, gamma, beta, bn_params):
         sample_mean = sample_mean.reshape(-1, 1)
         sample_var = sample_var.reshape(-1, 1)
         
-#        print (Z.shape)
+#        print (Z.shape, running_mean.shape)
         running_mean = momentum * running_mean + (1 - momentum) * sample_mean
         running_var = momentum * running_var + (1 - momentum) * sample_var
 
@@ -45,10 +45,10 @@ def forward_prop(Z, gamma, beta, bn_params):
         x_norm = x_centered / std
         
         out = gamma * x_norm + beta
-        running_means.append(running_mean)
-        running_vars.append(running_var)
-        bn_params['running_means'] = running_means
-        bn_params['running_vars'] = running_vars
+#        running_means.append(running_mean)
+#        running_vars.append(running_var)
+#        bn_params['running_means'] = running_means
+#        bn_params['running_vars'] = running_vars
         
         cache = (x_norm, x_centered, std, gamma)
 
@@ -60,8 +60,8 @@ def forward_prop(Z, gamma, beta, bn_params):
     else:
         raise ValueError('Invalid forward batch norm')
 
-    bn_params['running_mean'] = running_mean
-    bn_params['running_var'] = running_var
+    bn_params['running_mean'+str(l)] = running_mean
+    bn_params['running_var'+str(l)] = running_var
 
     return out, cache, bn_params
 

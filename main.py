@@ -5,77 +5,6 @@ Created on Thu Apr 30 15:22:09 2020
 @author: Dell
 """
 
-
-def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False, train=True):
-    # Import libraries
-    '''
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import pandas as pd
-    from linear_activation_forward import L_model_forward
-    
-    from parameter_initialize import para_init
-    from cost_func import compute_cost
-    from backpropagation import L_model_backward
-    from update_parameters import update_params
-    from batch_norm import forward_prop, batch_norm_init, back_prop
-    
-    '''
-    from gradient_checking import grad_check
-    """
-    Implements L layer neural network
-    (Linear->Relu)*(L-1) -> Linear->Sigmoid
-    
-    """
-    from batch_norm import forward_prop, batch_norm_init, back_prop
-    costs = []
-
-    # s = math.sqrt(2/X.shape[0])
-    # Parameters Initialization
-    parameters = para_init(layers_dims)
-    b_par = batch_norm_init(layers_dims)
-
-    # Gradient Descent
-    for i in range(0, num_iterations):
-
-        # Forward propagation
-        AL, caches = L_model_forward(X, parameters, b_par)
-
-        # Compute cost
-        cost = compute_cost(AL, Y)
-
-        # Backward propagation
-        grads = L_model_backward(AL, Y, caches)
-
-        # gradient checking
-
-        if (i == 0 or i == 100 or i == 500 or i == 3000):
-            parameters, diff = update_params(X, Y, parameters, grads, learning_rate, check=True)
-            if diff > 2e-7:
-                break
-
-        # Update parameters
-        parameters, b_par = update_params(parameters, b_par, grads, learning_rate)
-
-        # Print the cost after 100 training examples
-        if print_cost and i % 100 == 0:
-            print("Cost after iteration %i: %f" % (i, cost))
-        if print_cost and i % 100 == 0:
-            costs.append(cost)
-
-    # plot the costs
-    plt.plot(np.squeeze(costs))
-    plt.ylabel('cost')
-    plt.xlabel('iterations(per hundreds)')
-    plt.title('Learning rate = ' + str(learning_rate))
-    plt.show()
-
-    # parameters["costs"] = costs
-    # parameters["learning_rate"] = learning_rate
-
-    return parameters
-
-
 def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate=0.0005, dropout=True, keep_prob=0.5,
                learning_rate=0.0007, mini_batch_size=64, mode='train', beta=0.9,
                batch_norm=True, beta1=0.9,
@@ -88,8 +17,10 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate=0.0005, dropout=T
     from linear_activation_forward_with_dropout import L_model_forward as ldr
     from parameter_initialize import para_init
     from cost_func import compute_cost
-    from backpropagation import L_model_backward
-    from backpropagation_with_dropout import L_model_backward as bdr
+#    from backpropagation import L_model_backward
+#    from backpropagation_with_dropout import L_model_backward as bdr
+    from forw_prop_with_dropout import forward_propagation_with_dropout as fp
+    from back_prop_with_dropout import backward_propagation_with_dropout as bp
     from update_parameters import update_parameters_with_adam, update_parameters_with_momentum, update_params
     from adam import initialize_adam
     from batch_norm import forward_prop, batch_norm_init, back_prop
@@ -117,6 +48,7 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate=0.0005, dropout=T
     for i in range(num_epochs):
         minibatches = create_minibatch(X, Y, mini_batch_size)
         cost_total = 0
+        
         for mini_batch in minibatches:
 
             # select a mini-batch
@@ -127,7 +59,8 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate=0.0005, dropout=T
 
             # Forward propagation
             if dropout:
-                AL, caches, b_par = ldr(mini_batch_X, parameters, b_par, batch_norm, keep_prob=keep_prob)
+#                AL, caches, b_par = ldr(mini_batch_X, parameters, b_par, batch_norm, keep_prob=keep_prob)\
+                AL, caches = fp(mini_batch_X, parameters, keep_prob = keep_prob)
             else:
                 AL, caches, b_par = L_model_forward(mini_batch_X, parameters, b_par, batch_norm)
 
@@ -143,7 +76,8 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate=0.0005, dropout=T
 
             # Backward propagation
             if dropout:
-                grads = bdr(AL, mini_batch_Y, caches, batch_norm, keep_prob)
+#                grads = bdr(AL, mini_batch_Y, caches, batch_norm, keep_prob)
+                grads = bp(AL, mini_batch_Y, caches, keep_prob)
             else:
                 grads = L_model_backward(AL, mini_batch_Y, batch_norm, caches)
 
@@ -185,7 +119,7 @@ def adam_model(X, Y, layers_dims, optimizer='adam', decay_rate=0.0005, dropout=T
     plt.title('Learning rate = ' + str(learning_rate))
     plt.show()
 
-    return parameters, b_par
+    return parameters, b_par, grads
 
 
 """
