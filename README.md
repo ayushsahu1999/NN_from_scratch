@@ -209,3 +209,5 @@ m --> number of examples in training set.
 ![](images/formulas.png)
 
 This is just a simple low level explaination of how neural networks. Later, I will try to show how to optimize neural networks and increase its performance.
+
+This is the best neural netowrk from scratch tutorial repository you can get. so fork and enjoy and also * it.
